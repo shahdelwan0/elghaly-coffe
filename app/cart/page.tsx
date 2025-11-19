@@ -40,7 +40,7 @@ export default function CartPage() {
       <Navbar />
 
       {/* Page Header */}
-      <section className="bg-[#321a12] text-white py-12 relative overflow-hidden">
+      <section className="bg-[#321a12] text-white py-12 relative overflow-hidden pt-24">
         <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/coffee.png')]"></div>
         <div className="container mx-auto px-4 relative z-10">
           <h1 className="text-4xl md:text-5xl font-bold mb-2">Shopping Cart</h1>

@@ -10,28 +10,32 @@ export default function Home() {
       id: "1",
       title: "Signature Blend",
       price: 250.0,
-      image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=2070&auto=format&fit=crop",
+      image:
+        "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=2070&auto=format&fit=crop",
       category: "Coffee Beans",
     },
     {
       id: "2",
       title: "Ethiopian Yirgacheffe",
       price: 320.0,
-      image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=1974&auto=format&fit=crop",
+      image:
+        "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=1974&auto=format&fit=crop",
       category: "Single Origin",
     },
     {
       id: "3",
       title: "Espresso Roast",
       price: 280.0,
-      image: "https://images.unsplash.com/photo-1512568400610-62da28bc8a13?q=80&w=1974&auto=format&fit=crop",
+      image:
+        "https://images.unsplash.com/photo-1512568400610-62da28bc8a13?q=80&w=1974&auto=format&fit=crop",
       category: "Espresso",
     },
     {
       id: "4",
       title: "French Press Bundle",
       price: 850.0,
-      image: "https://images.unsplash.com/photo-1506372023823-741c83b836fe?q=80&w=2070&auto=format&fit=crop",
+      image:
+        "https://images.unsplash.com/photo-1506372023823-741c83b836fe?q=80&w=2070&auto=format&fit=crop",
       category: "Bundles",
     },
   ];
@@ -42,15 +46,15 @@ export default function Home() {
       <Hero />
 
       {/* Featured Products */}
-      <section className="py-20">
+      <section className="py-20 pt-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary">
               Featured Products
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Discover our most popular blends and single-origin coffees, loved by
-              coffee enthusiasts everywhere.
+              Discover our most popular blends and single-origin coffees, loved
+              by coffee enthusiasts everywhere.
             </p>
           </div>
 
@@ -69,7 +73,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center gap-12">
             <div className="md:w-1/2">
               <img
-                src="https://images.unsplash.com/photo-1442512595331-e89e7385a861?q=80&w=2070&auto=format&fit=crop"
+                src="https://plus.unsplash.com/premium_photo-1733317435318-531c85f0f00a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTEzfHxjb2ZmZSUyMGJyZXdpbmd8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop"
                 alt="Coffee Brewing"
                 className="rounded-lg shadow-2xl"
               />
