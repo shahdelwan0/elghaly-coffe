@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import "./globals.css";
+import { ToastProvider } from "@/lib/toastContext";
+import ToastContainer from "@/components/ToastContainer";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -20,10 +22,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${cairo.variable} antialiased`}
-      >
-        {children}
+      <body className={`${cairo.variable} antialiased`}>
+        <ToastProvider>
+          {children}
+          <ToastContainer />
+        </ToastProvider>
       </body>
     </html>
   );

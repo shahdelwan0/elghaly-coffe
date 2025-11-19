@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
+import { useToast } from "@/hooks/useToast";
 import { products } from "@/lib/products";
 
 interface ProductCardProps {
@@ -22,12 +23,20 @@ export default function ProductCard({
   category,
 }: ProductCardProps) {
   const { addToCart } = useCart();
+  const { addToast } = useToast();
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     const product = products.find((p) => p.id === id);
     if (product) {
       addToCart(product, 1);
+      addToast({
+        type: "success",
+        title: `${product.title} added to cart`,
+        description: `LE ${product.price.toFixed(2)}`,
+        image: product.image,
+        duration: 3000,
+      });
     }
   };
 
