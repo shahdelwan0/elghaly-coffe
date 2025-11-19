@@ -7,6 +7,8 @@ import {
   validateCheckoutForm,
   isFormValid,
 } from "@/lib/checkoutValidation";
+import { createOrder } from "@/app/actions/orders";
+import { CartItem } from "@/lib/cart";
 
 export const useCheckout = () => {
   const [formData, setFormData] = useState<CheckoutFormData>({
@@ -45,21 +47,25 @@ export const useCheckout = () => {
     return isFormValid(newErrors);
   };
 
-  const handleSubmit = async (onSuccess?: (data: CheckoutFormData) => void) => {
+    const handleSubmit = async (
+    items: CartItem[],
+    totalPrice: number,
+    onSuccess?: (orderId: string) => void,
+  ) => {
     if (!validateForm()) {
       return;
     }
 
     setIsSubmitting(true);
     try {
-      // TODO: Send form data to backend
-      console.log("Checkout data:", formData);
-      if (onSuccess) {
-        onSuccess(formData);
+      const result = await createOrder(formData, items, totalPrice);
+      if (result.success && result.orderId) {
+        if (onSuccess) onSuccess(result.orderId);
+      } else {
+        console.error("Order creation failed:", result.error);
       }
     } catch (error) {
-      console.error("Checkout error:", error);
-      setErrors({ firstName: "An error occurred. Please try again." });
+      console.error("Error submitting order:", error);
     } finally {
       setIsSubmitting(false);
     }

@@ -9,14 +9,18 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, AlertCircle } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useToast } from "@/hooks/useToast";
 
 export default function CheckoutPage() {
   const { formData, errors, isSubmitting, updateField, handleSubmit } =
     useCheckout();
-  const { items, getTotalPrice, isHydrated } = useCart();
+  const { items, getTotalPrice, isHydrated, clearCart } = useCart();
   const [isMounted, setIsMounted] = useState(false);
+  const router = useRouter();
+  const { addToast } = useToast();
 
   useEffect(() => {
     setIsMounted(true);
@@ -40,9 +44,15 @@ export default function CheckoutPage() {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    handleSubmit(() => {
-      // TODO: Redirect to order confirmation
-      console.log("Order placed successfully");
+    handleSubmit(items, totalPrice, (orderId) => {
+      clearCart();
+      addToast({
+        type: "success",
+        title: "Order Placed Successfully!",
+        description: `Order ID: ${orderId}`,
+        duration: 5000,
+      });
+      router.push("/");
     });
   };
 

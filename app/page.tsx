@@ -3,42 +3,11 @@ import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import { Coffee, ShieldCheck, Truck, Award } from "lucide-react";
+import { getProducts } from "@/app/actions/products";
 
-export default function Home() {
-  const featuredProducts = [
-    {
-      id: "1",
-      title: "Signature Blend",
-      price: 250.0,
-      image:
-        "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=2070&auto=format&fit=crop",
-      category: "Coffee Beans",
-    },
-    {
-      id: "2",
-      title: "Ethiopian Yirgacheffe",
-      price: 320.0,
-      image:
-        "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=1974&auto=format&fit=crop",
-      category: "Single Origin",
-    },
-    {
-      id: "3",
-      title: "Espresso Roast",
-      price: 280.0,
-      image:
-        "https://images.unsplash.com/photo-1512568400610-62da28bc8a13?q=80&w=1974&auto=format&fit=crop",
-      category: "Espresso",
-    },
-    {
-      id: "4",
-      title: "French Press Bundle",
-      price: 850.0,
-      image:
-        "https://images.unsplash.com/photo-1506372023823-741c83b836fe?q=80&w=2070&auto=format&fit=crop",
-      category: "Bundles",
-    },
-  ];
+export default async function Home() {
+  const products = await getProducts();
+  const featuredProducts = products.slice(0, 4);
 
   return (
     <main className="min-h-screen bg-background">

@@ -1,10 +1,10 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
-import { products as allProducts } from "@/lib/products";
+import { getProducts } from "@/app/actions/products";
 
-export default function Shop() {
-  const products = allProducts;
+export default async function Shop() {
+  const products = await getProducts();
 
   return (
     <main className="min-h-screen bg-background">

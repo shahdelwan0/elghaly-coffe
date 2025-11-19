@@ -1,4 +1,4 @@
-import { Product } from "./products";
+import { Product } from "./schema";
 
 export interface CartItem extends Product {
   quantity: number;
@@ -26,14 +26,14 @@ export const cartUtils = {
   },
 
   // Remove item from cart
-  removeFromCart: (items: CartItem[], productId: string): CartItem[] => {
+  removeFromCart: (items: CartItem[], productId: number): CartItem[] => {
     return items.filter((item) => item.id !== productId);
   },
 
   // Update item quantity
   updateQuantity: (
     items: CartItem[],
-    productId: string,
+    productId: number,
     quantity: number,
   ): CartItem[] => {
     if (quantity <= 0) {

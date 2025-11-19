@@ -2,13 +2,13 @@
 
 import React, { createContext, useState, useCallback, useEffect } from "react";
 import { CartItem, cartUtils, CART_STORAGE_KEY } from "./cart";
-import { Product } from "./products";
+import { Product } from "./schema";
 
 export interface CartContextType {
   items: CartItem[];
   addToCart: (product: Product, quantity: number) => void;
-  removeFromCart: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
+  removeFromCart: (productId: number) => void;
+  updateQuantity: (productId: number, quantity: number) => void;
   clearCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
@@ -48,11 +48,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setItems((prevItems) => cartUtils.addToCart(prevItems, product, quantity));
   }, []);
 
-  const removeFromCart = useCallback((productId: string) => {
+  const removeFromCart = useCallback((productId: number) => {
     setItems((prevItems) => cartUtils.removeFromCart(prevItems, productId));
   }, []);
 
-  const updateQuantity = useCallback((productId: string, quantity: number) => {
+  const updateQuantity = useCallback((productId: number, quantity: number) => {
     setItems((prevItems) =>
       cartUtils.updateQuantity(prevItems, productId, quantity),
     );
