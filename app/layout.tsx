@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "@/lib/toastContext";
+import { CartProvider } from "@/lib/cartContext";
 import ToastContainer from "@/components/ToastContainer";
 
 const cairo = Cairo({
@@ -23,10 +24,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${cairo.variable} antialiased`}>
-        <ToastProvider>
-          {children}
-          <ToastContainer />
-        </ToastProvider>
+        <CartProvider>
+          <ToastProvider>
+            {children}
+            <ToastContainer />
+          </ToastProvider>
+        </CartProvider>
       </body>
     </html>
   );
