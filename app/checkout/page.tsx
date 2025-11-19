@@ -170,7 +170,7 @@ export default function CheckoutPage() {
                         errors.governorate
                           ? "border-red-500 focus:ring-red-500"
                           : "border-gray-300 focus:ring-primary"
-                      } focus:outline-none focus:ring-2 appearance-none bg-white`}
+                      } focus:outline-none focus:ring-2 appearance-none bg-white cursor-pointer`}
                     >
                       <option value={0}>Select Governorate</option>
                       {egyptianGovernorates.map((gov) => (
@@ -200,7 +200,7 @@ export default function CheckoutPage() {
                         errors.city
                           ? "border-red-500 focus:ring-red-500"
                           : "border-gray-300 focus:ring-primary"
-                      } focus:outline-none focus:ring-2 appearance-none bg-white disabled:bg-gray-100 disabled:cursor-not-allowed`}
+                      } focus:outline-none focus:ring-2 appearance-none bg-white disabled:bg-gray-100 disabled:cursor-not-allowed cursor-pointer`}
                     >
                       <option value="">
                         {!formData.governorate
@@ -223,7 +223,7 @@ export default function CheckoutPage() {
                 </div>
 
                 {/* Detailed Address */}
-                <div className="mb-8">
+                <div className="mb-6">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Detailed Address *
                   </label>
@@ -238,7 +238,7 @@ export default function CheckoutPage() {
                         : "border-gray-300 focus:ring-primary"
                     } focus:outline-none focus:ring-2`}
                     placeholder="e.g., Apartment 5B, Building 10, Street Name..."
-                    rows={4}
+                    rows={2}
                   />
                   {errors.detailedAddress && (
                     <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
@@ -249,6 +249,35 @@ export default function CheckoutPage() {
                   <p className="text-xs text-gray-500 mt-1">
                     {formData.detailedAddress.length}/200 characters
                   </p>
+                </div>
+
+                {/* Payment Method */}
+                <div className="mb-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h3 className="text-sm font-medium text-gray-700 mb-3">
+                    Payment Method
+                  </h3>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="radio"
+                      id="cod"
+                      name="paymentMethod"
+                      value="cod"
+                      checked={true}
+                      disabled
+                      className="w-4 h-4 text-primary"
+                    />
+                    <label
+                      htmlFor="cod"
+                      className="flex flex-col cursor-not-allowed"
+                    >
+                      <span className="text-sm font-medium text-blue-900">
+                        Cash on Delivery (CoD)
+                      </span>
+                      <span className="text-xs text-blue-700">
+                        Pay when your order arrives at your doorstep
+                      </span>
+                    </label>
+                  </div>
                 </div>
 
                 {/* Buttons */}
@@ -311,24 +340,13 @@ export default function CheckoutPage() {
                 </div>
 
                 {/* Grand Total */}
-                <div className="border-t border-gray-200 pt-4 mb-6">
+                <div className="border-t border-gray-200 pt-4">
                   <div className="flex justify-between items-center">
                     <span className="text-lg font-bold">Total</span>
                     <span className="text-2xl font-bold text-primary">
                       LE {totalPrice.toFixed(2)}
                     </span>
                   </div>
-                </div>
-
-                {/* Payment Method */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <p className="text-sm font-medium text-blue-900 mb-1">
-                    Payment Method
-                  </p>
-                  <p className="text-sm text-blue-800">Cash on Delivery</p>
-                  <p className="text-xs text-blue-700 mt-2">
-                    Pay when your order arrives at your doorstep
-                  </p>
                 </div>
               </div>
             </div>
