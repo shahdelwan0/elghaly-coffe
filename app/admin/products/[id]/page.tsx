@@ -12,6 +12,11 @@ export default async function EditProductPage({ params }: PageProps) {
     const { id } = await params;
     const product = await db.query.products.findFirst({
         where: eq(products.id, parseInt(id)),
+        with: {
+            images: true,
+            sizes: true,
+            variants: true,
+        },
     });
 
     if (!product) {
