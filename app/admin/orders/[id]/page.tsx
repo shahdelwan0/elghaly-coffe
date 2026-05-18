@@ -3,6 +3,7 @@ import { orders, orderItems, products } from "@/lib/schema";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { updateOrderStatus } from "../actions";
+import { BackButton } from "../_components/back-button";
 
 interface PageProps {
     params: Promise<{ id: string }>;
@@ -42,6 +43,7 @@ export default async function OrderDetailsPage({ params }: PageProps) {
                     </p>
                 </div>
                 <div className="flex items-center gap-4">
+                    <BackButton />
                     <form action={updateOrderStatus.bind(null, order.id, "pending")}>
                         <button
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${order.status === "pending"
