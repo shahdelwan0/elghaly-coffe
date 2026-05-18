@@ -2,7 +2,15 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { ShoppingCart, Search, Menu, X, UserRound, LogOut } from "lucide-react";
+import {
+  ShoppingCart,
+  Search,
+  Menu,
+  X,
+  UserRound,
+  LogOut,
+  LayoutDashboard,
+} from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 import { signOut, useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
@@ -38,6 +46,7 @@ export default function Navbar() {
       : 0;
 
   const userName = session?.user?.name;
+  const isAdmin = (session?.user as { role?: string } | undefined)?.role === "admin";
   const isLoggedIn = Boolean(session?.user);
 
   const handleSignOut = async () => {
@@ -97,6 +106,16 @@ export default function Navbar() {
               <span className="max-w-[140px] truncate font-medium">
                 {userName}
               </span>
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-primary bg-primary px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-primary/90"
+                  aria-label="Open admin dashboard"
+                >
+                  <LayoutDashboard size={14} />
+                  <span>Admin Dashboard</span>
+                </Link>
+              )}
               <button
                 type="button"
                 onClick={handleSignOut}
@@ -115,17 +134,19 @@ export default function Navbar() {
               Sign in
             </Link>
           )}
-          <Link
-            href="/cart"
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors text-foreground relative"
-          >
-            <ShoppingCart size={20} />
-            {cartCount > 0 && (
-              <span className="absolute top-0 right-0 bg-secondary text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
-                {cartCount}
-              </span>
-            )}
-          </Link>
+          {!isAdmin && (
+            <Link
+              href="/cart"
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors text-foreground relative"
+            >
+              <ShoppingCart size={20} />
+              {cartCount > 0 && (
+                <span className="absolute top-0 right-0 bg-secondary text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -168,14 +189,27 @@ export default function Navbar() {
                 <span>Search</span>
               </button>
               {isLoggedIn ? (
-                <button
-                  type="button"
-                  onClick={handleSignOut}
-                  className="flex items-center space-x-2 text-foreground"
-                >
+                <div className="flex items-center space-x-2 text-foreground">
                   <UserRound size={20} />
                   <span>{userName}</span>
-                </button>
+                  {isAdmin && (
+                    <Link
+                      href="/admin"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-white"
+                    >
+                      <LayoutDashboard size={16} />
+                      <span>Dashboard</span>
+                    </Link>
+                  )}
+                  <button
+                    type="button"
+                    onClick={handleSignOut}
+                    className="rounded-full p-1 text-gray-500 transition-colors hover:bg-gray-100 hover:text-foreground"
+                    aria-label="Sign out"
+                  >
+                    <LogOut size={16} />
+                  </button>
+                </div>
               ) : (
                 <Link
                   href="/login"
@@ -186,14 +220,16 @@ export default function Navbar() {
                   <span>Sign in</span>
                 </Link>
               )}
-              <Link
-                href="/cart"
-                className="flex items-center space-x-2 text-foreground"
-                onClick={() => setIsOpen(false)}
-              >
-                <ShoppingCart size={20} />
-                <span>Cart {cartCount > 0 && `(${cartCount})`}</span>
-              </Link>
+              {!isAdmin && (
+                <Link
+                  href="/cart"
+                  className="flex items-center space-x-2 text-foreground"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <ShoppingCart size={20} />
+                  <span>Cart {cartCount > 0 && `(${cartCount})`}</span>
+                </Link>
+              )}
             </div>
           </div>
         </div>

@@ -7,11 +7,14 @@ import CartItemComponent from "@/components/CartItem";
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useSession } from "@/lib/auth-client";
 
 export default function CartPage() {
   const { items, removeFromCart, updateQuantity, getTotalPrice, isHydrated } =
     useCart();
   const [isMounted, setIsMounted] = useState(false);
+  const { data: session } = useSession();
+  const isAdmin = (session?.user as { role?: string } | undefined)?.role === "admin";
 
   useEffect(() => {
     setIsMounted(true);
@@ -133,11 +136,22 @@ export default function CartPage() {
 
                   {/* Checkout Button */}
                   <Link
-                    href="/checkout"
-                    className="block w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors mb-3 text-center"
+                    href={isAdmin ? "/admin" : "/checkout"}
+                    className={`block w-full py-3 rounded-lg font-bold transition-colors mb-3 text-center ${
+                      isAdmin
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-primary text-white hover:bg-primary/90"
+                    }`}
+                    aria-disabled={isAdmin}
                   >
-                    Proceed to Checkout
+                    {isAdmin ? "Admins cannot checkout" : "Proceed to Checkout"}
                   </Link>
+
+                  {isAdmin && (
+                    <p className="mb-3 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3">
+                      Admin accounts can browse the catalog, but they cannot place orders.
+                    </p>
+                  )}
 
                   {/* Continue Shopping Button */}
                   <Link

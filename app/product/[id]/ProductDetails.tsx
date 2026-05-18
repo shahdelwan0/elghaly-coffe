@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/useToast";
+import { useSession } from "@/lib/auth-client";
 import { Product, ProductImage, ProductSize, ProductVariant } from "@/lib/schema";
 
 interface ProductWithRelations extends Product {
@@ -23,6 +24,8 @@ interface ProductDetailsProps {
 export default function ProductDetails({ product }: ProductDetailsProps) {
   const { addToCart } = useCart();
   const { addToast } = useToast();
+  const { data: session } = useSession();
+  const isAdmin = (session?.user as { role?: string } | undefined)?.role === "admin";
 
   // Image State
   const [selectedImage, setSelectedImage] = useState(
@@ -49,6 +52,16 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
   }, [product]);
 
   const handleAddToCart = () => {
+    if (isAdmin) {
+      addToast({
+        type: "error",
+        title: "Admins cannot purchase products",
+        description: "Use a buyer account to place orders.",
+        duration: 3500,
+      });
+      return;
+    }
+
     // Construct a custom product object for the cart to include selected options
     // Note: You might need to update your CartContext to handle these extra fields if you want to display them in the cart.
     // For now, we'll assume the cart can take the base product and we might append details to the title or similar if the cart is simple.
@@ -188,30 +201,38 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
             {/* Quantity and Add to Cart */}
             <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-100">
-              <div className="flex items-center border border-gray-300 rounded-lg w-fit bg-white">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="p-3 hover:bg-gray-100 transition-colors rounded-l-lg"
-                  disabled={quantity <= 1}
-                >
-                  <Minus size={20} className="text-gray-600" />
-                </button>
-                <span className="w-12 text-center font-medium text-lg">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="p-3 hover:bg-gray-100 transition-colors rounded-r-lg"
-                >
-                  <Plus size={20} className="text-gray-600" />
-                </button>
-              </div>
+              {!isAdmin ? (
+                <>
+                  <div className="flex items-center border border-gray-300 rounded-lg w-fit bg-white">
+                    <button
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="p-3 hover:bg-gray-100 transition-colors rounded-l-lg"
+                      disabled={quantity <= 1}
+                    >
+                      <Minus size={20} className="text-gray-600" />
+                    </button>
+                    <span className="w-12 text-center font-medium text-lg">{quantity}</span>
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="p-3 hover:bg-gray-100 transition-colors rounded-r-lg"
+                    >
+                      <Plus size={20} className="text-gray-600" />
+                    </button>
+                  </div>
 
-              <button
-                onClick={handleAddToCart}
-                className="flex-1 bg-primary text-white py-3 px-6 rounded-lg font-bold hover:bg-green-700 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 transform hover:-translate-y-0.5"
-              >
-                <ShoppingCart size={20} />
-                Add to Cart
-              </button>
+                  <button
+                    onClick={handleAddToCart}
+                    className="flex-1 bg-primary text-white py-3 px-6 rounded-lg font-bold hover:bg-green-700 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 transform hover:-translate-y-0.5"
+                  >
+                    <ShoppingCart size={20} />
+                    Add to Cart
+                  </button>
+                </>
+              ) : (
+                <div className="w-full rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
+                  Admin accounts can view products only. Purchase actions are disabled.
+                </div>
+              )}
             </div>
           </div>
         </div>

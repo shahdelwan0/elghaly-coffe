@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { LayoutDashboard, Package, ShoppingCart } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, ArrowUpRight } from "lucide-react";
 
 export default async function AdminLayout({
     children,
@@ -23,6 +23,13 @@ export default async function AdminLayout({
             <aside className="w-64 bg-white border-r border-gray-200 hidden md:block">
                 <div className="p-6">
                     <h1 className="text-2xl font-bold text-primary">Admin</h1>
+                    <Link
+                        href="/admin"
+                        className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90"
+                    >
+                        Dashboard
+                        <ArrowUpRight size={16} />
+                    </Link>
                 </div>
                 <nav className="px-4 space-y-2">
                     <Link

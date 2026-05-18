@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/useToast";
+import { useSession } from "@/lib/auth-client";
 
 interface ProductCardProps {
   id: number;
@@ -25,9 +26,22 @@ export default function ProductCard({
 }: ProductCardProps) {
   const { addToCart } = useCart();
   const { addToast } = useToast();
+  const { data: session } = useSession();
+  const isAdmin = (session?.user as { role?: string } | undefined)?.role === "admin";
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
+
+    if (isAdmin) {
+      addToast({
+        type: "error",
+        title: "Admins cannot purchase products",
+        description: "Switch to a buyer account to add items to cart.",
+        duration: 3500,
+      });
+      return;
+    }
+
     const product = { id, title, price, image, category, description };
     addToCart(product, 1);
     addToast({
@@ -38,7 +52,6 @@ export default function ProductCard({
       duration: 3000,
     });
   };
-
   return (
     <div className="group relative bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100">
       {/* Image Container */}
@@ -50,13 +63,15 @@ export default function ProductCard({
           className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
         />
 
-        {/* Quick Add Button */}
-        <button
-          onClick={handleAddToCart}
-          className="absolute bottom-4 right-4 bg-white text-foreground p-3 rounded-full shadow-lg translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-primary hover:text-white"
-        >
-          <ShoppingCart size={20} />
-        </button>
+        {!isAdmin && (
+          <button
+            onClick={handleAddToCart}
+            className="absolute bottom-4 right-4 bg-white text-foreground p-3 rounded-full shadow-lg translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-primary hover:text-white"
+            aria-label={`Add ${title} to cart`}
+          >
+            <ShoppingCart size={20} />
+          </button>
+        )}
       </div>
 
       {/* Content */}

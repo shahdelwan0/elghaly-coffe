@@ -37,5 +37,9 @@ export default async function CheckoutLayout({
         );
     }
 
+    if (session.user.role === "admin") {
+        redirect("/admin");
+    }
+
     return <>{children}</>;
 }
