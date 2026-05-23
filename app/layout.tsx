@@ -26,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${cairo.variable} antialiased`}>
+        <body className={`${cairo.variable} antialiased`} suppressHydrationWarning>
         <CartProvider>
           <ToastProvider>
             <NextSSRPlugin
