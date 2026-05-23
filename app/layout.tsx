@@ -26,12 +26,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-        <body className={`${cairo.variable} antialiased`} suppressHydrationWarning>
+      <body
+        className={`${cairo.variable} antialiased`}
+        suppressHydrationWarning
+      >
         <CartProvider>
           <ToastProvider>
-            <NextSSRPlugin
-              routerConfig={extractRouterConfig(ourFileRouter)}
-            />
+            <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
             {children}
             <ToastContainer />
           </ToastProvider>
